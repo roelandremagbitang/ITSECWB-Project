@@ -1,0 +1,179 @@
+{{!-- post-details.hbs --}}
+<header class="header">
+  <div class="container d-flex justify-content-between align-items-center">
+    <img src="/images/forum-friends-logo.png" alt="Forum Friends Logo" class="logo" style="width:180px; height:auto;" />
+    <nav class="d-flex gap-3">
+    <a href="/home" class="nav-link">Home</a>
+    <a href="/profile/{{user.username}}" class="nav-link">Profile</a>
+    <a href="/logout" class="nav-link">Logout</a>
+  </nav>
+  </div>
+</header>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Left Sidebar: Popular Posts -->
+    <aside class="col-lg-3 d-none d-lg-block">
+      <div class="filter-section">
+        <h5>Popular Posts</h5>
+        {{#if popularPosts.length}}
+          <ul class="list-group">
+            {{#each popularPosts as |popPost|}}
+              <li class="list-group-item">
+                <a href="/post/{{popPost.id}}">{{popPost.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p class="text-muted">No popular posts yet.</p>
+        {{/if}}
+      </div>
+    </aside>
+
+    <!-- Main Content Section -->
+    <section class="col-lg-9">
+      <!-- Back Button -->
+      <div class="mb-3">
+        <a href="/home" style="text-decoration:none;">
+          <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Back" style="width:24px; height:24px;">
+        </a>
+      </div>
+
+      <!-- Post Container -->
+      <div class="post-container position-relative">
+        {{!-- Only show Edit and Delete buttons if the logged-in user is the author --}}
+        {{#if (eq post.author user.username)}}
+          <div class="position-absolute" style="top: 10px; right: 10px; display: flex; gap: 5px;">
+            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPostModal">
+              Edit
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+              Delete
+            </button>
+          </div>
+        {{/if}}
+
+        <h1 class="post-title">{{post.title}}</h1>
+        <p class="post-meta">Posted by {{post.author}} on {{post.timestamp}}</p>
+        <p>{{post.content}}</p>
+        {{#if post.tags}}
+          <p><strong>Tags:</strong> {{post.tags}}</p>
+        {{/if}}
+        {{#if post.image}}
+          <img src="{{post.image}}" alt="Post Image" style="max-width:100%; height:auto;">
+        {{/if}}
+
+        <!-- Voting Section for the Post -->
+        <div class="mt-3 d-flex align-items-center">
+          <form action="/post/{{@root.postIndex}}/upvote" method="POST" style="margin-right: 8px;">
+            <button class="btn btn-sm btn-outline-success" type="submit">↑</button>
+          </form>
+          <span class="mx-2 fw-bold">{{post.votes}}</span>
+          <form action="/post/{{@root.postIndex}}/downvote" method="POST" style="margin-left: 8px;">
+            <button class="btn btn-sm btn-outline-danger" type="submit">↓</button>
+          </form>
+        </div>
+      </div>
+
+
+      <!-- Delete Post Confirmation Modal -->
+      <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <form method="POST" action="/post/{{@root.postIndex}}/delete" class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deletePostModalLabel">Confirm Deletion</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to permanently delete this post?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Comment Section -->
+      <div class="comment-section mt-5">
+        <h4>Comments</h4>
+        {{#if commentMessage}}
+          <div class="alert alert-success text-center">{{commentMessage}}</div>
+        {{/if}}
+
+        {{#if post.comments}}
+          {{#if post.comments.length}}
+            <!-- Loop over top-level comments and call the recursive partial -->
+            <div class="mt-3">
+              {{#each post.comments as |comment|}}
+            {{> comment
+                comment=comment
+                postIndex=@root.postIndex
+                path=comment.path
+            }}
+          {{/each}}
+
+            </div>
+          {{else}}
+            <p class="text-muted">No comments yet.</p>
+          {{/if}}
+        {{else}}
+          <p class="text-muted">No comments yet.</p>
+        {{/if}}
+
+        <!-- Add New Comment Form -->
+        <div class="comment-box mt-4">
+          <h5>Add a Comment</h5>
+          <!-- Where the Comment Form takes place to input -->
+          <form method="POST" action="/post/{{@root.postIndex}}/comment">
+            <div class="mb-3">
+              <textarea class="form-control" name="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">Post Comment</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Edit Post Modal -->
+      <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <form method="POST" action="/post/{{@root.postIndex}}/edit" class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editPostModalLabel">Edit Post</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="editPostTitle" class="form-label">Post Title</label>
+                <input type="text" class="form-control" id="editPostTitle" name="postTitle" value="{{post.title}}" required>
+              </div>
+              <div class="mb-3">
+                <label for="editPostContent" class="form-label">Post Content</label>
+                <textarea class="form-control" id="editPostContent" name="postContent" rows="5" required>{{post.content}}</textarea>
+              </div>
+              <div class="mb-3">
+                <label for="editPostTags" class="form-label">Tags</label>
+                <input type="text" class="form-control" id="editPostTags" name="postTags" value="{{post.tags}}">
+              </div>
+              <div class="mb-3">
+                <label for="editPostImage" class="form-label">Image URL</label>
+                <input type="text" class="form-control" id="editPostImage" name="postImage" value="{{post.image}}">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer class="text-center py-3">
+  <p class="text-muted mb-0">&copy; 2025 Forum Friends</p>
+</footer>

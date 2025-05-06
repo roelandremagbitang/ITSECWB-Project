@@ -1,0 +1,68 @@
+{{!-- edit-profile.hbs --}}
+<header class="header">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <img src="/images/forum-friends-logo.png" alt="Forum Friends Logo" class="logo">
+    </div>
+    <nav class="d-flex gap-3">
+      <a href="/home" class="nav-link">Home</a>
+      <a href="/profile/{{profile.username}}" class="nav-link">Profile</a>
+      <a href="/logout" class="nav-link">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container py-5">
+  <div class="profile-container">
+    <h3 class="text-center mb-4">Edit Profile</h3>
+    <form method="POST" action="/edit-profile/{{profile.username}}">
+      <div class="mb-4 text-center">
+        <label for="profilePictureURL" class="form-label">Profile Picture URL</label>
+        <div>
+          <img src="{{profile.picture}}" alt="Profile Picture" class="profile-img">
+        </div>
+        <input 
+          type="text" 
+          class="form-control mt-3" 
+          name="profilePictureURL" 
+          id="profilePictureURL"
+          placeholder="Enter new image URL" 
+          value="{{profile.picture}}"
+        >
+      </div>
+
+      {{!-- Username Editing --}}
+      <div class="mb-4">
+        <label for="newUsername" class="form-label">Username</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          name="newUsername" 
+          id="newUsername"
+          placeholder="Enter new username"
+          value="{{profile.username}}"
+          required
+        >
+      </div>
+
+       <div class="mb-4">
+        <label for="bio" class="form-label">Bio</label>
+        <textarea class="form-control" name="bio" id="bio" rows="3" placeholder="Write something...">{{profile.bio}}</textarea>
+      </div>
+
+
+      <div class="mb-4">
+        <label for="description" class="form-label">Short Description</label>
+        <textarea class="form-control" name="description" id="description" rows="3" placeholder="Write something...">{{profile.bio}}</textarea>
+      </div>
+      <div class="btn-container">
+        <a href="/profile/{{profile.username}}" class="nav-link">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer class="text-center py-3">
+  <p class="text-muted">&copy; 2025 Forum Friends</p>
+</footer>
