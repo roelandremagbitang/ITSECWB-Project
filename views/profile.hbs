@@ -1,0 +1,105 @@
+{{!-- profile.hbs --}}
+<header class="header" style="height: auto; padding: 10px 0;">
+  <div class="container d-flex justify-content-between align-items-center">
+    <img src="/images/forum-friends-logo.png" alt="Forum Friends Logo" style="width: 180px; height:auto;" />
+    <nav class="d-flex gap-3">
+        
+      <a href="/about" class="nav-link">About</a>
+      <a href="/home" class="nav-link active">Home</a>
+
+      {{#if user}}
+        <a href="/profile/{{user.username}}" class="nav-link">Profile</a>
+        <a href="/logout" class="nav-link">Logout</a>
+      {{else}}
+        <a href="/login" class="nav-link">Login</a>
+        <a href="/register" class="nav-link">Register</a>
+      {{/if}}
+    </nav>
+  </div>
+</header>
+
+
+  <main class="container py-5">
+  <div class="profile-container text-center mb-5 position-relative">
+    <img src="{{profile.profilePicture}}" alt="Profile Picture" class="profile-img mb-3" style="width:120px; height:120px; object-fit:cover; border-radius:50%;">
+    {{#if isOwnProfile}}
+      <a href="/edit-profile" class="position-absolute top-0 end-0 btn btn-sm btn-outline-primary mt-3 me-3">
+          Edit Profile
+      </a>
+    {{/if}}
+
+    <h3>{{profile.username}}</h3>
+    <p>"{{profile.bio}}"</p>
+  </div>
+
+  <div class="row gy-4">
+    {{!-- Latest Posts Section --}}
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-center">Latest Posts</h5>
+          {{#if latestPosts.length}}
+            {{#each latestPosts}}
+              <div class="mb-3 border-bottom pb-2">
+                <h6><a href="/post/{{_id}}" class="text-decoration-none">{{title}}</a></h6>
+                <p class="small">Posted {{this.timestamp}} • {{this.votes}} upvotes</p>
+              </div>
+            {{/each}}
+          {{else}}
+            <p class="text-center">No posts yet.</p>
+          {{/if}}
+          <div class="text-center mt-3">
+            <a href="/profile/{{profile.username}}/posts" class="btn btn-outline-primary btn-sm">View All Posts</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{!-- Latest Comments Section --}}
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-center">Recent Comments</h5>
+          {{#if latestComments.length}}
+            {{#each latestComments}}
+              <div class="mb-3 border-bottom pb-2">
+                <p>"{{this.text}}"</p>
+                <p class="small">
+                  On: 
+                  {{#if this.postId}}
+                    <a href="/post/{{this.postId}}" class="text-decoration-none">View Post</a>
+                  {{else}}
+                    <em>(Post removed)</em>
+                  {{/if}} 
+                  • {{this.timestamp}}
+                </p>
+              </div>
+            {{/each}}
+          {{else}}
+            <p class="text-center">No comments yet.</p>
+          {{/if}}
+          <div class="text-center mt-3">
+            <a href="/profile/{{profile.username}}/comments" class="btn btn-outline-primary btn-sm">View All Comments</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<footer class="text-center py-3">
+  <p class="mb-0">&copy; 2025 Forum Friends</p>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the theme stored in localStorage
+    const savedTheme = localStorage.getItem('theme');
+    
+    // If a theme is saved, apply it to the page
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  });
+</script>

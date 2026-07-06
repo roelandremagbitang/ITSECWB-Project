@@ -1,0 +1,202 @@
+{{!-- home.hbs --}}
+
+<header class="header" style="height: auto; padding: 10px 0;">
+  <div class="container d-flex justify-content-between align-items-center">
+    <img src="/images/forum-friends-logo.png" alt="Forum Friends Logo" style="width: 180px; height:auto;" />
+    <nav class="d-flex gap-3">
+      <!-- Dark Mode Toggle Button -->
+      <button id="darkModeToggle" class="btn btn-secondary" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        🌙
+      </button>
+      <a href="/about" class="nav-link">About</a>
+      <a href="/home" class="nav-link active">Home</a>
+
+      {{#if user}}
+        <a href="/profile/{{user.username}}" class="nav-link">Profile</a>
+        <a href="/logout" class="nav-link">Logout</a>
+      {{else}}
+        <a href="/login" class="nav-link">Login</a>
+        <a href="/register" class="nav-link">Register</a>
+      {{/if}}
+    </nav>
+  </div>
+</header>
+
+<main class="container mt-4" style="min-height: 70vh;">
+  <div class="row">
+    <!-- Left Sidebar: Popular Posts -->
+    <aside class="col-lg-3 d-none d-lg-block">
+      <div class="filter-section">
+        <h5>Popular Posts</h5>
+        {{#if popularPosts.length}}
+          <ul class="list-unstyled">
+            {{#each popularPosts}}
+              <li class="mb-2">
+                <a href="/post/{{_id}}" class="text-decoration-none fw-bold">{{title}}</a>
+                <p class="small">{{votes}} upvotes</p>
+              </li>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p>No popular posts yet.</p>
+        {{/if}}
+      </div>
+    </aside>
+
+    <!-- Main Post List -->
+    <section class="col-lg-6">
+      {{#if posts.length}}
+        {{#each posts}}
+          <div class="post-card mb-3 position-relative d-flex align-items-start p-3 rounded shadow-sm">
+
+            <!-- Profile Picture on the Top Left -->
+            <a href="/profile/{{this.author}}" class="me-3" style="position: absolute; top: 10px; left: 10px;">
+              <img src="{{this.profilePicture}}" alt="Profile Picture" 
+                  class="rounded-circle border" 
+                  style="width: 45px; height: 45px; object-fit: cover;">
+            </a>
+
+            <div class="ms-5">
+              <a href="/post/{{_id}}" class="post-title h5 text-decoration-none">{{this.title}}</a>
+
+              <p class="small mb-1">
+                {{this.commentCount}} {{#if (eq this.commentCount 1)}}comment{{else}}comments{{/if}}
+              </p>
+
+              <p class="post-meta">
+                Posted by <a href="/profile/{{this.author}}" class="text-decoration-none">{{this.author}}</a> on {{this.timestamp}}
+              </p>
+
+              <p class="mb-1">
+                {{#if (gt (strlen this.content) 300)}}
+                  {{trimContent this.content 300}}...
+                  <a href="/post/{{_id}}" class="text-decoration-none">Read more</a>
+                {{else}}
+                  {{this.content}}
+                {{/if}}
+              </p>
+
+              <!-- Check if an image URL is provided, then display it -->
+              {{#if this.imageUrl}}
+                <div class="post-image mt-3">
+                  <img src="{{this.imageUrl}}" alt="Post Image" class="img-fluid rounded">
+                </div>
+              {{/if}}
+
+            </div>
+
+          </div>
+        {{/each}}
+      {{else}}
+        <div class="post-card text-center p-4">
+          <p class="mb-2">No posts have been created yet.</p>
+          <p class="mb-0">Click the <strong>+</strong> button below to create your first post!</p>
+        </div>
+      {{/if}}
+    </section>
+
+
+    <!-- Right Sidebar: Filters -->
+    <aside class="col-lg-3">
+      <div class="filter-section">
+        <h5>Search Posts</h5>
+        <form method="GET" action="/home">
+          
+          <!-- Search Bar -->
+          <input type="text"
+                class="form-control search-bar"
+                name="search"
+                placeholder="Search posts..."
+                value="{{query.search}}">  <!-- Retains search term -->
+          <br>
+
+          <h5>Filter Posts</h5>
+
+          <!-- Tags Input -->
+          <label class="form-label mt-2">Enter Tags</label>
+          <input type="text"
+                class="form-control"
+                name="tags"
+                placeholder="Enter tags (comma-separated)"
+                value="{{query.tags}}">
+
+          <!-- Category Select -->
+          <label class="form-label mt-2">Select Category</label>
+          <select class="form-select mb-3" name="category">
+            <option value="" {{#unless query.category}}selected{{/unless}}>All Topics</option>
+            <option value="Technology" {{#if (eq query.category "Technology")}}selected{{/if}}>Technology</option>
+            <option value="Gaming" {{#if (eq query.category "Gaming")}}selected{{/if}}>Gaming</option>
+            <option value="Design" {{#if (eq query.category "Design")}}selected{{/if}}>Design</option>
+          </select>
+
+          <!-- Sort By Dropdown -->
+          <label class="form-label mt-2">Sort By</label>
+          <select class="form-select mb-3" name="sort">
+            <option value="newest" {{#if (eq query.sort "newest")}}selected{{/if}}>Newest First</option>
+            <option value="oldest" {{#if (eq query.sort "oldest")}}selected{{/if}}>Oldest First</option>
+          </select>
+
+          <!-- Apply Filters Button -->
+          <button type="submit" class="btn btn-primary mt-3 w-100">Apply Filters</button>
+        </form>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- Floating Create Post Button -->
+<a href="/create-post" class="create-post-btn text-decoration-none">+</a>
+
+<!-- Jump to Top Button -->
+<a href="#" class="btn btn-primary jump-to-top" id="jumpToTopBtn" style="display: none;">↑</a>
+
+<footer class="text-center py-3">
+  <p class="mb-0">&copy; 2025 Forum Friends</p>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const jumpToTopBtn = document.getElementById("jumpToTopBtn");
+
+    // Show button when scrolled down past the header
+    window.onscroll = function () {
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        jumpToTopBtn.style.display = "block";  // Show button
+      } else {
+        jumpToTopBtn.style.display = "none";   // Hide button
+      }
+    };
+
+    // Scroll to the top when the button is clicked
+    jumpToTopBtn.onclick = function (event) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });  // Smooth scroll to top
+    };
+  });
+
+  // Dark mode feature
+  document.addEventListener('DOMContentLoaded', function () {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    // Check if the user has previously set a theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        darkModeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';  // Change icon based on theme
+    }
+
+    // Toggle Dark Mode
+    darkModeToggle.addEventListener('click', function () {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            document.documentElement.removeAttribute('data-theme');  // Switch to light mode
+            localStorage.setItem('theme', 'light');
+            darkModeToggle.textContent = '🌙';  // Change icon to dark mode
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');  // Switch to dark mode
+            localStorage.setItem('theme', 'dark');
+            darkModeToggle.textContent = '☀️';  // Change icon to light mode
+        }
+    });
+});
+</script>

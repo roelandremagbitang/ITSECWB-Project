@@ -1,0 +1,523 @@
+/* Base Styles (Light Mode) */
+:root {
+    --background-color: #F5F5F5;
+    --text-color: #333333;
+    --header-background: #FFFFFF;
+    --footer-background: #FFFFFF;
+    --link-color: #007BFF;
+    --btn-primary-bg: #007BFF;
+    --btn-primary-hover-bg: #0056b3;
+    --card-bg: #FFFFFF;
+    --card-shadow: rgba(0, 0, 0, 0.1);
+    --btn-warning-bg: #FFC107;
+    --btn-warning-hover-bg: #e0a800;
+    --btn-danger-bg: #DC3545;
+    --btn-danger-hover-bg: #c82333;
+    --border-color: #E0E0E0;
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --header-background: #1f1f1f;
+    --footer-background: #1f1f1f;
+    --link-color: #4e9eff;
+    --btn-primary-bg: #4e9eff;
+    --btn-primary-hover-bg: #0056b3;
+    --card-bg: #333333;
+    --card-shadow: rgba(255, 255, 255, 0.1);
+    --btn-warning-bg: #FFC107;
+    --btn-warning-hover-bg: #e0a800;
+    --btn-danger-bg: #DC3545;
+    --btn-danger-hover-bg: #c82333;
+    --border-color: #444444;
+    --vote-text-color: #ffffff;  /* White for vote count */
+}
+
+/* Body */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Header Styling */
+.header {
+    background-color: var(--header-background);
+    border-bottom: 2px solid var(--border-color);
+    padding: 10px 0;
+}
+
+/* Navigation Links */
+.nav-link {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--link-color);
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--btn-primary-bg);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-hover-bg);
+}
+
+.btn-warning {
+    background-color: var(--btn-warning-bg);
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: var(--btn-warning-hover-bg);
+}
+
+.btn-danger {
+    background-color: var(--btn-danger-bg);
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: var(--btn-danger-hover-bg);
+}
+
+/* Cards and Containers */
+.card {
+    background: var(--card-bg);
+    box-shadow: 0 4px 8px var(--card-shadow);
+}
+
+.container-main {
+    display: flex;
+    gap: 20px;
+}
+
+/* Post Styling */
+.post-container {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.post-title {
+    color: var(--text-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.post-title:hover {
+    color: var(--link-color);
+}
+
+.post-meta {
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.post-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--card-shadow);
+    transition: transform 0.2s;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--card-shadow);
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Comment Styling */
+.comment-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.comment {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px;
+}
+
+.comment:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Vote Styling */
+.vote-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.vote-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.vote-button:hover {
+    color: var(--link-color);
+}
+
+.upvote {
+    color: green;
+}
+
+.downvote {
+    color: red;
+}
+
+.vote-count {
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+    color: var(--vote-text-color); /* Ensure vote count text is white */
+}
+
+/* Profile Styling */
+.profile-container {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.edit-profile-container {
+    max-width: 500px;
+    margin: auto;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--btn-primary-bg);
+}
+
+/* Content Section */
+.content-section {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Post, Comment Styling */
+.post, .comment-item {
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+}
+
+/* View More Link */
+.view-more {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.view-more a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.view-more a:hover {
+    text-decoration: underline;
+}
+
+/* Form Styling */
+.create-post-container {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Filter Section */
+.filter-section {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+}
+
+.search-bar {
+    margin-bottom: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+    flex: 1;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.main-content {
+    flex: 3;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Utility Classes */
+h3, label, .btn, p, a {
+    user-select: none;
+}
+
+/* Footer */
+footer {
+    background-color: var(--footer-background);
+    border-top: 1px solid var(--border-color);
+}
+
+/* BONUS FEATURE: Jump to top button */
+.jump-to-top {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: var(--btn-primary-bg);
+    color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.jump-to-top:hover {
+    background-color: var(--btn-primary-hover-bg);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .post-card,
+[data-theme="dark"] .post-container,
+[data-theme="dark"] .comment-box,
+[data-theme="dark"] .create-post-container,
+[data-theme="dark"] .content-section,
+[data-theme="dark"] .filter-section,
+[data-theme="dark"] .sidebar,
+[data-theme="dark"] .main-content,
+[data-theme="dark"] .card {
+    background-color: #000000;  /* True black for post containers */
+    border: 1px solid #444444;  /* Soft gray border */
+    color: #ffffff;             /* White text */
+}
+
+/* Post title and post content in dark mode */
+[data-theme="dark"] .post-title,
+[data-theme="dark"] .post-meta,
+[data-theme="dark"] .post p,
+[data-theme="dark"] .comment p {
+    color: #ffffff;
+}
+
+/* Popular posts sidebar link tweaks */
+[data-theme="dark"] .filter-section a,
+[data-theme="dark"] .sidebar a {
+    color: #5cabff; /* Softer blue */
+}
+
+[data-theme="dark"] .filter-section a:hover,
+[data-theme="dark"] .sidebar a:hover {
+    color: #8ac4ff;
+}
+
+/* Placeholder text in inputs (like search bar) in dark mode */
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: #aaaaaa;
+}
+
+/* Form fields in dark mode */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #444444;
+}
+
+/* Buttons in Dark Mode */
+[data-theme="dark"] .btn-primary {
+    background-color: #4e9eff;
+    color: white;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background-color: #007acc;
+}
+
+/* Footer - Light Mode */
+footer {
+    background-color: var(--footer-background);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+/* Footer - Dark Mode */
+[data-theme="dark"] footer {
+    background-color: #1f1f1f;  /* Dark background for footer */
+    border-top: 1px solid #444444;  /* Darker border color */
+    color: #e0e0e0;  /* White text in dark mode */
+}
+
+/* Floating Add Post Button */
+.create-post-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px; /* Ensure it stays in the bottom right */
+    background-color: var(--btn-primary-bg);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    z-index: 9999; /* Ensure it stays on top */
+}
+
+.create-post-btn:hover {
+    transform: scale(1.05);
+    background-color: var(--btn-primary-hover-bg);
+}
+
+/* Base Styles for Modals */
+.modal-content {
+    background-color: var(--card-bg);  /* Modal background */
+    border-radius: 10px;
+    color: var(--text-color);           /* Text color */
+    border: 1px solid var(--border-color); /* Modal border */
+}
+
+/* Modal Header */
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    color: var(--text-color);
+}
+
+/* Modal Body */
+.modal-body {
+    color: var(--text-color);
+}
+
+/* Modal Footer */
+.modal-footer {
+    background-color: var(--background-color);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Button Styling */
+.btn-close {
+    color: var(--text-color);
+}
+
+.btn-secondary, .btn-success {
+    color: var(--text-color);
+    background-color: var(--btn-primary-bg);
+    border: none;
+}
+
+/* Button Hover */
+.btn-secondary:hover, .btn-success:hover {
+    background-color: var(--btn-primary-hover-bg);
+    color: white;
+}
+
+/* Responsive Design for Modals */
+@media (max-width: 768px) {
+    .modal-dialog {
+        max-width: 90%;
+    }
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .modal-content {
+    background-color: #333333; /* Darker modal background */
+    color: #e0e0e0;  /* White text */
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom: 1px solid #444444;
+}
+
+[data-theme="dark"] .modal-body {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .modal-footer {
+    background-color: #121212;
+    border-top: 1px solid #444444;
+}
+
+[data-theme="dark"] .btn-secondary, [data-theme="dark"] .btn-success {
+    background-color: #4e9eff;
+    color: white;
+}
+
+[data-theme="dark"] .btn-secondary:hover, [data-theme="dark"] .btn-success:hover {
+    background-color: #007acc;
+}
+
+/* Adjust Input and Textarea */
+[data-theme="dark"] .form-control {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #444444;
+}
+
+[data-theme="dark"] .form-control:focus {
+    border-color: #4e9eff;
+    box-shadow: 0 0 0 0.25rem rgba(78, 158, 255, 0.25);
+}
